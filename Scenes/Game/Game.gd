@@ -2,6 +2,7 @@ extends Node2D
 
 
 var paddle_scene = preload("res://Entities/Paddle/Paddle.tscn")
+var powerup_scene = preload("res://Entities/Powerup/Powerup.tscn")
 
 export (String) var main_menu_scene_path
 
@@ -14,6 +15,8 @@ var paddle_left
 var paddle_right
 var initial_position_padel_left
 var initial_position_padel_right
+
+var last_hit_paddle
 
 onready var hud = get_node("HUD")
 
@@ -45,11 +48,20 @@ func add_paddles():
 		right_input = PlayerInputComponent.new()
 		right_input.set_side(PlayerInputComponent.Side.RIGHT)
 	else:
-		printerr("INVALID GAME MODE")
+		# Default to hard AI for testing purposes.
+		right_input = AiHardInputComponent.new()
 	paddle_right.add_child(right_input)
 	
-	self.add_child(paddle_left)
-	self.add_child(paddle_right)
+	call_deferred("add_child", paddle_left)
+	call_deferred("add_child", paddle_right)
+
+
+func remove_paddles():
+	if paddle_left:
+		call_deferred("remove_child", paddle_left)
+	if paddle_right:
+		call_deferred("remove_child", paddle_right)
+	last_hit_paddle = null
 
 
 func new_game():
@@ -65,11 +77,14 @@ func _process(_delta):
 
 func reset():
 	$Ball.reset()
-	paddle_left.position = initial_position_padel_left
-	paddle_right.position = initial_position_padel_right
 	$StartTimer.start()
 	hud.get_node("CountDownContainer").set_visible(true)
 	$FinalScreen.set_visible(false)
+	remove_paddles()
+	add_paddles()
+	
+	for powerup in get_tree().get_nodes_in_group("powerups"):
+		powerup.queue_free()
 
 
 func update_score():
@@ -85,9 +100,8 @@ func end_game(message):
 func _on_Field_goal_left():
 	score_right += 1
 	update_score()
-	if score_right < max_score:
-		reset()
-	else:
+	reset()
+	if score_right >= max_score:
 		end_game("Right wins")
 
 
@@ -111,3 +125,18 @@ func _on_FinalScreen_end():
 
 func _on_FinalScreen_play():
 	new_game()
+
+
+func _on_PowerupTimer_timeout():
+	var powerup = powerup_scene.instance()
+	powerup.position = Vector2(rand_range(100, 1024 - 100), rand_range(88 + 50, 600 - 50))
+	powerup.connect("powerup_collected", self, "_on_powerup_collected")
+	self.add_child(powerup)
+
+
+func _on_powerup_collected(powerup):
+	powerup.collect(last_hit_paddle)
+
+
+func _on_Ball_collided_with_paddle(paddle):
+	last_hit_paddle = paddle

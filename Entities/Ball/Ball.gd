@@ -8,6 +8,8 @@ var speed = initial_speed
 var hit_counter
 var direction
 
+signal collided_with_paddle(paddle)
+
 func _ready():
 	randomize()
 	initial_position = position
@@ -40,5 +42,7 @@ func _physics_process(delta):
 			# Make the padel direction influence the bounce direction.
 			var y = direction.y / 2 + collision.collider_velocity.y
 			direction = Vector2(direction.x, y).normalized() * (speed + hit_counter * speed_increase)
+			
+			emit_signal("collided_with_paddle", collision.collider)
 		else:
 			$CollideWall.play()
