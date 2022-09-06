@@ -39,6 +39,8 @@ func add_paddles():
 	var right_input
 	if Global.game_mode == Global.GameMode.VersusEasyAi:
 		right_input = AiInputComponent.new()
+	elif Global.game_mode == Global.GameMode.VersusHardAi:
+		right_input = AiHardInputComponent.new()
 	elif Global.game_mode == Global.GameMode.VersusPlayer:
 		right_input = PlayerInputComponent.new()
 		right_input.set_side(PlayerInputComponent.Side.RIGHT)

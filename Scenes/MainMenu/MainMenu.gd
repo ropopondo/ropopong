@@ -13,5 +13,10 @@ func _on_VersusAiButton_pressed():
 	var _error = get_tree().change_scene(game_scene)
 
 
+func _on_VersusHardAiButton_pressed():
+	Global.game_mode = Global.GameMode.VersusHardAi
+	var _error = get_tree().change_scene(game_scene)
+
+
 func _on_ExitButton_pressed():
 	get_tree().quit()

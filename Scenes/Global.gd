@@ -2,6 +2,7 @@ extends Node
 
 enum GameMode {
 	VersusEasyAi,
+	VersusHardAi,
 	VersusPlayer,
 }
 
