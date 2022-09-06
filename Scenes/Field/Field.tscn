@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Field/Field.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Field/Field.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 512, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 256 )
+
+[node name="Field" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="WallTop" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
+position = Vector2( 512, 78 )
+shape = SubResource( 1 )
+
+[node name="WallBottom" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom"]
+position = Vector2( 512, 610 )
+shape = SubResource( 1 )
+
+[node name="GoalLeft" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalLeft"]
+position = Vector2( -10, 344 )
+shape = SubResource( 2 )
+
+[node name="GoalRight" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalRight"]
+position = Vector2( 1034, 344 )
+shape = SubResource( 2 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 512, 300 )
+texture = ExtResource( 1 )
+
+[connection signal="area_entered" from="GoalLeft" to="." method="_on_GoalLeft_area_entered"]
+[connection signal="body_entered" from="GoalLeft" to="." method="_on_GoalLeft_body_entered"]
+[connection signal="area_entered" from="GoalRight" to="." method="_on_GoalRight_area_entered"]
+[connection signal="body_entered" from="GoalRight" to="." method="_on_GoalRight_body_entered"]

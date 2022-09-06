@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0, 0, 0, 0.376471 )
+
+[node name="HUD" type="Control"]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="CountDownContainer" type="PanelContainer" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 0.5
+margin_bottom = 87.5
+custom_styles/panel = SubResource( 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="CountDownContainer"]
+margin_top = 10.0
+margin_right = 1024.0
+margin_bottom = 77.0
+
+[node name="CountDown" type="Label" parent="CountDownContainer/CenterContainer"]
+margin_left = 495.0
+margin_right = 528.0
+margin_bottom = 67.0
+theme = ExtResource( 1 )
+text = "3"
+
+[node name="Points" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_top = 10.0
+margin_bottom = 77.0
+custom_constants/separation = 75
+alignment = 1
+
+[node name="PointsLeft" type="Label" parent="Points"]
+margin_left = 439.0
+margin_right = 472.0
+margin_bottom = 67.0
+theme = ExtResource( 1 )
+text = "1"
+
+[node name="PointsRight" type="Label" parent="Points"]
+margin_left = 547.0
+margin_right = 585.0
+margin_bottom = 67.0
+theme = ExtResource( 1 )
+text = "0"

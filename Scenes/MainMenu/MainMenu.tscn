@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
+[ext_resource path="res://Scenes/MainMenu/MainMenu.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+game_scene = "res://Scenes/Game/Game.tscn"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -301.5
+margin_top = -184.5
+margin_right = 301.5
+margin_bottom = 184.5
+custom_styles/panel = SubResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2"]
+margin_right = 603.0
+margin_bottom = 369.0
+custom_constants/separation = 75
+alignment = 1
+
+[node name="VersusPlayerButton" type="Button" parent="PanelContainer2/VBoxContainer"]
+margin_right = 603.0
+margin_bottom = 73.0
+theme = ExtResource( 1 )
+text = "Play versus player"
+
+[node name="VersusAiButton2" type="Button" parent="PanelContainer2/VBoxContainer"]
+margin_top = 148.0
+margin_right = 603.0
+margin_bottom = 221.0
+theme = ExtResource( 1 )
+text = "Play versus AI"
+
+[node name="ExitButton" type="Button" parent="PanelContainer2/VBoxContainer"]
+margin_top = 296.0
+margin_right = 603.0
+margin_bottom = 369.0
+theme = ExtResource( 1 )
+text = "Exit"
+
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_pressed"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/VersusAiButton2" to="." method="_on_VersusAiButton_pressed"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]

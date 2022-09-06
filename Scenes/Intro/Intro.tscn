@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
+[ext_resource path="res://Scenes/Intro/Intro.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+
+[node name="Intro" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+main_menu_scene = "res://Scenes/MainMenu/MainMenu.tscn"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="RopopondoLabel" type="Label" parent="PanelContainer"]
+margin_top = 266.0
+margin_right = 1024.0
+margin_bottom = 333.0
+theme = ExtResource( 1 )
+text = "Ropopondo"
+align = 1
+
+[node name="IntroTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="IntroTimer" to="." method="_on_IntroTimer_timeout"]

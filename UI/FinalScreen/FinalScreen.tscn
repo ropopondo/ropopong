@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
+[ext_resource path="res://UI/FinalScreen/FinalScreen.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_top = 40.0
+content_margin_bottom = 40.0
+bg_color = Color( 0, 0, 0, 0.662745 )
+
+[node name="FinalScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1024.0
+margin_bottom = 600.0
+script = ExtResource( 2 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -103.5
+margin_bottom = 191.5
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_top = 40.0
+margin_right = 2048.0
+margin_bottom = 255.0
+
+[node name="EndMessage" type="Label" parent="PanelContainer/VBoxContainer"]
+margin_right = 2048.0
+margin_bottom = 67.0
+theme = ExtResource( 1 )
+text = "You Win"
+align = 1
+
+[node name="Again" type="Label" parent="PanelContainer/VBoxContainer"]
+margin_top = 71.0
+margin_right = 2048.0
+margin_bottom = 138.0
+theme = ExtResource( 1 )
+text = "Play again?"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 142.0
+margin_right = 2048.0
+margin_bottom = 215.0
+custom_constants/separation = 75
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 832.0
+margin_right = 986.0
+margin_bottom = 73.0
+theme = ExtResource( 1 )
+text = "Play"
+
+[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 1061.0
+margin_right = 1215.0
+margin_bottom = 73.0
+theme = ExtResource( 1 )
+text = "Exit"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
