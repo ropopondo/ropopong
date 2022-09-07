@@ -12,8 +12,12 @@ main_menu_scene_path = "res://Scenes/MainMenu/MainMenu.tscn"
 
 [node name="Field" parent="." instance=ExtResource( 2 )]
 
-[node name="Ball" parent="." instance=ExtResource( 3 )]
+[node name="Balls" type="Node" parent="."]
+
+[node name="Ball" parent="Balls" instance=ExtResource( 3 )]
 position = Vector2( 512, 344 )
+
+[node name="Paddles" type="Node" parent="."]
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -30,7 +34,7 @@ visible = false
 
 [connection signal="goal_left" from="Field" to="." method="_on_Field_goal_left"]
 [connection signal="goal_right" from="Field" to="." method="_on_Field_goal_right"]
-[connection signal="collided_with_paddle" from="Ball" to="." method="_on_Ball_collided_with_paddle"]
+[connection signal="collided_with_paddle" from="Balls/Ball" to="." method="_on_Ball_collided_with_paddle"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="PowerupTimer" to="." method="_on_PowerupTimer_timeout"]
 [connection signal="end" from="FinalScreen" to="." method="_on_FinalScreen_end"]

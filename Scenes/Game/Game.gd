@@ -1,8 +1,10 @@
 extends Node2D
 
 
+var ball_scene = preload("res://Entities/Ball/Ball.tscn")
 var paddle_scene = preload("res://Entities/Paddle/Paddle.tscn")
 var powerup_scene = preload("res://Entities/Powerup/Powerup.tscn")
+var wall_scene = preload("res://Entities/Wall/Wall.tscn")
 
 export (String) var main_menu_scene_path
 
@@ -11,20 +13,20 @@ var score_right = 0
 
 export var max_score = 3
 
-var paddle_left
-var paddle_right
-var initial_position_padel_left
-var initial_position_padel_right
+var paddle_left: Paddle
+var paddle_right: Paddle
 
-var last_hit_paddle
+var last_hit_paddle: Paddle
 
-onready var hud = get_node("HUD")
+onready var hud: Control = get_node("HUD")
+var ball: Ball
+onready var paddles: Node = get_node("Paddles")
+
+var additional_balls: Array
 
 
 func _ready():
-	add_paddles()
-	initial_position_padel_left = paddle_left.position
-	initial_position_padel_right = paddle_right.position
+	ball = get_node("Balls/Ball")
 	new_game()
 
 
@@ -51,16 +53,15 @@ func add_paddles():
 		# Default to hard AI for testing purposes.
 		right_input = AiHardInputComponent.new()
 	paddle_right.add_child(right_input)
-	
-	call_deferred("add_child", paddle_left)
-	call_deferred("add_child", paddle_right)
+	paddles.call_deferred("add_child", paddle_left)
+	paddles.call_deferred("add_child", paddle_right)
 
 
 func remove_paddles():
 	if paddle_left:
-		call_deferred("remove_child", paddle_left)
+		paddles.call_deferred("remove_child", paddle_left)
 	if paddle_right:
-		call_deferred("remove_child", paddle_right)
+		paddles.call_deferred("remove_child", paddle_right)
 	last_hit_paddle = null
 
 
@@ -76,7 +77,7 @@ func _process(_delta):
 
 
 func reset():
-	$Ball.reset()
+	ball.reset()
 	$StartTimer.start()
 	hud.get_node("CountDownContainer").set_visible(true)
 	$FinalScreen.set_visible(false)
@@ -85,6 +86,10 @@ func reset():
 	
 	for powerup in get_tree().get_nodes_in_group("powerups"):
 		powerup.queue_free()
+	
+	for additional_ball in additional_balls:
+		additional_ball.queue_free()
+	additional_balls.clear()
 
 
 func update_score():
@@ -116,7 +121,7 @@ func _on_Field_goal_right():
 
 func _on_StartTimer_timeout():
 	hud.get_node("CountDownContainer").set_visible(false)
-	$Ball.start()
+	ball.start()
 
 
 func _on_FinalScreen_end():
@@ -128,15 +133,49 @@ func _on_FinalScreen_play():
 
 
 func _on_PowerupTimer_timeout():
-	var powerup = powerup_scene.instance()
+	var powerup: Powerup = powerup_scene.instance()
 	powerup.position = Vector2(rand_range(100, 1024 - 100), rand_range(88 + 50, 600 - 50))
-	powerup.connect("powerup_collected", self, "_on_powerup_collected")
+	var _error := powerup.connect("powerup_collected", self, "_on_powerup_collected")
 	self.add_child(powerup)
 
 
-func _on_powerup_collected(powerup):
+func _on_powerup_collected(powerup: Powerup):
+	if powerup.type == powerup.Type.BlockUntilHit:
+		create_wall()
+	elif powerup.type == powerup.Type.AddBalls:
+		add_balls()
+	
 	powerup.collect(last_hit_paddle)
 
 
-func _on_Ball_collided_with_paddle(paddle):
+func _on_Ball_collided_with_paddle(paddle: Paddle):
 	last_hit_paddle = paddle
+
+
+func create_wall() -> void:
+	var wall := wall_scene.instance() as Wall
+	var x: int
+	if last_hit_paddle == paddle_left:
+		x = 0
+	else:
+		var wall_width: int = (wall.get_node("CollisionShape2D") as CollisionShape2D).shape.extents.x * 2
+		x = 1024 - wall_width
+	wall.position = Vector2(x, 88)
+	call_deferred("add_child", wall)
+
+
+func add_balls() -> void:
+	for i in range(1, 4):
+		var new_ball: Ball = ball_scene.instance()
+		new_ball.position = ball.position
+		new_ball.position -= ball.direction.normalized() * 20 * i
+		new_ball.hit_counter = ball.hit_counter
+		var rotation := deg2rad(i * 10)
+		if i % 2 == 0:
+			rotation *= -1
+		new_ball.direction = ball.direction.rotated(rotation)
+		var _error := new_ball.connect("collided_with_paddle", self, "_on_Ball_collided_with_paddle")
+		
+		additional_balls.push_back(new_ball)
+		
+		call_deferred("add_child_below_node", $Balls, new_ball)

@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+class_name Paddle
+
 signal update
 
 # Declare member variables here.
@@ -27,7 +29,7 @@ func _physics_process(delta):
 		var _collision = move_and_collide(direction * delta)
 
 
-func increase_height(amount):
+func increase_height(amount: int):
 	if $ColorRect.rect_size.y >= max_height:
 		return
 	

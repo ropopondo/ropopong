@@ -19,21 +19,45 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entities/Paddle/AiInputComponent.gd"
 }, {
+"base": "KinematicBody2D",
+"class": "Ball",
+"language": "GDScript",
+"path": "res://Entities/Ball/Ball.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
 }, {
+"base": "KinematicBody2D",
+"class": "Paddle",
+"language": "GDScript",
+"path": "res://Entities/Paddle/Paddle.gd"
+}, {
 "base": "Node",
 "class": "PlayerInputComponent",
 "language": "GDScript",
 "path": "res://Entities/Paddle/PlayerInputComponent.gd"
+}, {
+"base": "Area2D",
+"class": "Powerup",
+"language": "GDScript",
+"path": "res://Entities/Powerup/Powerup.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Wall",
+"language": "GDScript",
+"path": "res://Entities/Wall/Wall.gd"
 } ]
 _global_script_class_icons={
 "AiHardInputComponent": "",
 "AiInputComponent": "",
+"Ball": "",
 "GitAPI": "",
-"PlayerInputComponent": ""
+"Paddle": "",
+"PlayerInputComponent": "",
+"Powerup": "",
+"Wall": ""
 }
 
 [application]

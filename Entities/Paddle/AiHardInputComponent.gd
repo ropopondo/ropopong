@@ -3,7 +3,7 @@ extends Node
 class_name AiHardInputComponent
 
 # Declare member variables here.
-onready var ball = get_node("/root/Game/Ball")
+onready var ball = get_node("/root/Game/Balls/Ball")
 
 var paddle
 
