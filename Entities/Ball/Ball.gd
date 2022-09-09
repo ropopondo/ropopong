@@ -78,6 +78,7 @@ func _physics_process(delta):
 			$CollidePaddle.play()
 
 			var paddle: Paddle = collision.collider
+			# 1 is left side, -1 is right side.
 			var paddle_side: int = 1
 			if paddle.position.x > 512:
 				paddle_side = -1
@@ -97,11 +98,19 @@ func _physics_process(delta):
 			)
 
 			# Add an angle when hitting the ball further out.
-			direction = direction.rotated(
-				deg2rad(
-					paddle_rotation_max_deg * (diff_to_center / (paddle.height / 2)) * paddle_side
+			# The check makes sure we are not on an upper or lower edge of the paddle.
+			# It ensures that the ball direction is away from the paddle, as we
+			# already applied the bounce.
+			if (paddle_side > 0 and direction.x > 0) or (paddle_side < 0 and direction.x < 0):
+				direction = direction.rotated(
+					deg2rad(
+						(
+							paddle_rotation_max_deg
+							* (diff_to_center / (paddle.height / 2))
+							* paddle_side
+						)
+					)
 				)
-			)
 
 			emit_signal("collided_with_paddle", paddle)
 		elif collision.collider.is_in_group("walls"):
