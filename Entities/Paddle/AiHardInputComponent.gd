@@ -2,9 +2,6 @@ extends Node
 
 class_name AiHardInputComponent
 
-# Declare member variables here.
-onready var ball = get_node("/root/Game/Balls/Ball")
-
 var paddle
 
 # The border above the playing field on screen.
@@ -19,24 +16,39 @@ func _ready():
 	paddle.connect("update", self, "calculate_velocity")
 
 
-func calculate_velocity():
+func calculate_velocity() -> void:
 	if not "direction" in paddle:
 		return
 
-	if is_ball_moving_away():
+	var closest_ball: Ball = get_closest_ball()
+	if is_ball_moving_away(closest_ball):
 		move_towards_center()
 	else:
-		move_towards_predicted_ball()
+		move_towards_predicted_ball(closest_ball)
 
 
-func is_ball_moving_away():
+func get_closest_ball() -> Ball:
+	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	var closest_ball = all_balls.front()
+	var distance_to_closest_ball = closest_ball.position.distance_to(paddle.position)
+
+	for ball in all_balls:
+		var distance_to_ball = ball.position.distance_to(paddle.position)
+		if distance_to_ball < distance_to_closest_ball:
+			closest_ball = ball
+			distance_to_closest_ball = distance_to_ball
+
+	return closest_ball
+
+
+func is_ball_moving_away(ball: Ball) -> bool:
 	if ball.direction.x < 0:
 		return true
 
 	return false
 
 
-func move_towards_center():
+func move_towards_center() -> void:
 	var direction
 	if paddle.position.y > 344 + 2:
 		direction = -1
@@ -48,8 +60,8 @@ func move_towards_center():
 	paddle.direction = Vector2(0, direction)
 
 
-func move_towards_predicted_ball():
-	var target_y = predict_ball_at_paddle()
+func move_towards_predicted_ball(ball: Ball) -> void:
+	var target_y = predict_ball_at_paddle(ball)
 	var direction
 	# By adding a relatively large number, the AI will hit more with the edge of the paddle.
 	# That increases the ball speed and makes it harder for the player.
@@ -64,7 +76,7 @@ func move_towards_predicted_ball():
 
 
 # Simple trigonometrical prediction.
-func predict_ball_at_paddle():
+func predict_ball_at_paddle(ball: Ball) -> float:
 	if ball.direction.y == 0:
 		return top_border + (viewport_height - top_border) / 2
 
