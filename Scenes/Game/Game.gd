@@ -6,11 +6,10 @@ var powerup_scene = preload("res://Entities/Powerup/Powerup.tscn")
 var wall_scene = preload("res://Entities/Wall/Wall.tscn")
 
 export(String) var main_menu_scene_path
+export var game_time := 60
 
 var score_left = 0
 var score_right = 0
-
-export var max_score = 3
 
 var paddle_left: Paddle
 var paddle_right: Paddle
@@ -21,11 +20,8 @@ onready var hud: Control = get_node("HUD")
 var ball: Ball
 onready var paddles: Node = get_node("Paddles")
 
-var additional_balls: Array
-
 
 func _ready():
-	ball = get_node("Balls/Ball")
 	new_game()
 
 
@@ -56,18 +52,34 @@ func add_paddles():
 	paddles.call_deferred("add_child", paddle_right)
 
 
+func add_ball():
+	ball = ball_scene.instance()
+	var _error := ball.connect("collided_with_paddle", self, "_on_Ball_collided_with_paddle")
+	get_node("/root/Game/Balls").call_deferred("add_child", ball)
+
+
 func remove_paddles():
 	if paddle_left:
 		paddles.call_deferred("remove_child", paddle_left)
+		paddle_left = null
 	if paddle_right:
 		paddles.call_deferred("remove_child", paddle_right)
+		paddle_right = null
 	last_hit_paddle = null
+
+
+func remove_balls():
+	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	for old_ball in all_balls:
+		old_ball.queue_free()
+	ball = null
 
 
 func new_game():
 	score_left = 0
 	score_right = 0
 	update_score()
+	reset_game_timer()
 	reset()
 
 
@@ -75,9 +87,18 @@ func _process(_delta):
 	hud.get_node("CountDownContainer/CenterContainer/CountDown").set_text(
 		str(ceil($StartTimer.time_left))
 	)
+	hud.get_node("Top/Timer").set_text(str(ceil($GameTimer.time_left)))
+
+	if $GameTimer.time_left == 0 and score_left != score_right:
+		if score_left > score_right:
+			end_game("Left wins!")
+		else:
+			end_game("Right wins!")
 
 
 func reset():
+	remove_balls()
+	add_ball()
 	ball.reset()
 	$StartTimer.start()
 	hud.get_node("CountDownContainer").set_visible(true)
@@ -88,17 +109,19 @@ func reset():
 	for powerup in get_tree().get_nodes_in_group("powerups"):
 		powerup.queue_free()
 
-	for additional_ball in additional_balls:
-		additional_ball.queue_free()
-	additional_balls.clear()
-
 
 func update_score():
-	hud.get_node("Points/PointsLeft").set_text(str(score_left))
-	hud.get_node("Points/PointsRight").set_text(str(score_right))
+	hud.get_node("Top/PointsLeft").set_text(str(score_left))
+	hud.get_node("Top/PointsRight").set_text(str(score_right))
+
+
+func reset_game_timer() -> void:
+	$GameTimer.start(game_time)
 
 
 func end_game(message):
+	remove_paddles()
+	remove_balls()
 	$FinalScreen.get_node("PanelContainer/VBoxContainer/EndMessage").set_text(message)
 	$FinalScreen.set_visible(true)
 
@@ -107,17 +130,12 @@ func _on_Field_goal_left():
 	score_right += 1
 	update_score()
 	reset()
-	if score_right >= max_score:
-		end_game("Right wins")
 
 
 func _on_Field_goal_right():
 	score_left += 1
 	update_score()
-	if score_left < max_score:
-		reset()
-	else:
-		end_game("Left wins")
+	reset()
 
 
 func _on_StartTimer_timeout():
@@ -182,6 +200,4 @@ func add_balls() -> void:
 			"collided_with_paddle", self, "_on_Ball_collided_with_paddle"
 		)
 
-		additional_balls.push_back(new_ball)
-
-		call_deferred("add_child_below_node", $Balls, new_ball)
+		get_node("/root/Game/Balls").call_deferred("add_child", ball)

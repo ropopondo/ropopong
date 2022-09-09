@@ -20,7 +20,7 @@ export var paddle_rotation_max_deg: float = 40
 var hit_counter: int = 0
 var direction: Vector2 = Vector2()
 
-onready var initial_position := position
+var initial_position := Vector2(512, 344)
 
 signal collided_with_paddle(paddle)
 

@@ -21,6 +21,9 @@ func calculate_velocity() -> void:
 		return
 
 	var closest_ball: Ball = get_closest_ball()
+	if not closest_ball:
+		return
+
 	if is_ball_moving_away(closest_ball):
 		move_towards_center()
 	else:
@@ -29,6 +32,9 @@ func calculate_velocity() -> void:
 
 func get_closest_ball() -> Ball:
 	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	if all_balls.empty():
+		return null
+
 	var closest_ball = all_balls.front()
 	var distance_to_closest_ball = closest_ball.position.distance_to(paddle.position)
 
