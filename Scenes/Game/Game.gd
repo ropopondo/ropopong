@@ -1,12 +1,12 @@
 extends Node2D
 
+export(String) var main_menu_scene_path
+export var game_time := 60
+
 var ball_scene = preload("res://Entities/Ball/Ball.tscn")
 var paddle_scene = preload("res://Entities/Paddle/Paddle.tscn")
 var powerup_scene = preload("res://Entities/Powerup/Powerup.tscn")
 var wall_scene = preload("res://Entities/Wall/Wall.tscn")
-
-export(String) var main_menu_scene_path
-export var game_time := 60
 
 var score_left = 0
 var score_right = 0
@@ -16,8 +16,9 @@ var paddle_right: Paddle
 
 var last_hit_paddle: Paddle
 
-onready var hud: Control = get_node("HUD")
 var ball: Ball
+
+onready var hud: Control = get_node("HUD")
 onready var paddles: Node = get_node("Paddles")
 
 
@@ -81,6 +82,7 @@ func new_game():
 	update_score()
 	reset_game_timer()
 	reset()
+	get_tree().paused = false
 
 
 func _process(_delta):
@@ -126,6 +128,13 @@ func end_game(message):
 	$FinalScreen.set_visible(true)
 
 
+func _unhandled_key_input(_event):
+	if Input.is_action_just_pressed("game_pause"):
+		get_tree().paused = true
+		get_tree().set_input_as_handled()
+		$Pause.visible = true
+
+
 func _on_Field_goal_left():
 	score_right += 1
 	update_score()
@@ -144,12 +153,20 @@ func _on_StartTimer_timeout():
 
 
 func _on_FinalScreen_end():
+	get_tree().paused = false
 	var _error = get_tree().change_scene(main_menu_scene_path)
 
 
 func _on_FinalScreen_play():
 	new_game()
 
+func _on_Pause_play():
+	$Pause.visible = false
+	get_tree().paused = false
+
+func _on_Pause_end():
+	get_tree().paused = false
+	var _error = get_tree().change_scene(main_menu_scene_path)
 
 func _on_PowerupTimer_timeout():
 	var powerup: Powerup = powerup_scene.instance()
