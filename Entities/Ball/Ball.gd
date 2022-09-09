@@ -110,6 +110,17 @@ func _physics_process(delta):
 		else:
 			$CollideWall.play()
 
+	# Direction must have a minimal horizontal movement to keep the game fun.
+	var deg_angle = rad2deg(direction.angle())
+	if deg_angle > 75 and deg_angle <= 90:
+		direction = direction.rotated(-direction.angle() + deg2rad(75))
+	elif deg_angle < -75 and deg_angle >= -90:
+		direction = direction.rotated(-(direction.angle() + deg2rad(75)))
+	elif deg_angle > 90 and deg_angle < 105:
+		direction = direction.rotated(-direction.angle() + deg2rad(105))
+	elif deg_angle < -90 and deg_angle > -105:
+		direction = direction.rotated(-direction.angle() - deg2rad(105))
+
 	direction = direction.normalized() * get_speed() * paddle_multiplier
 
 
