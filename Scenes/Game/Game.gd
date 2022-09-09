@@ -91,11 +91,20 @@ func _process(_delta):
 	)
 	hud.get_node("Top/Timer").set_text(str(ceil($GameTimer.time_left)))
 
+	remove_balls_out_of_bounds()
+	maybe_reset()
+
 	if $GameTimer.time_left == 0 and score_left != score_right:
 		if score_left > score_right:
 			end_game("Left wins!")
 		else:
 			end_game("Right wins!")
+
+
+func maybe_reset() -> void:
+	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	if all_balls.empty():
+		reset()
 
 
 func reset():
@@ -115,6 +124,13 @@ func reset():
 func update_score():
 	hud.get_node("Top/PointsLeft").set_text(str(score_left))
 	hud.get_node("Top/PointsRight").set_text(str(score_right))
+
+
+func remove_balls_out_of_bounds():
+	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	for old_ball in all_balls:
+		if old_ball.position.x < -10 or old_ball.position.x > 1034:
+			old_ball.queue_free()
 
 
 func reset_game_timer() -> void:
@@ -138,13 +154,11 @@ func _unhandled_key_input(_event):
 func _on_Field_goal_left():
 	score_right += 1
 	update_score()
-	reset()
 
 
 func _on_Field_goal_right():
 	score_left += 1
 	update_score()
-	reset()
 
 
 func _on_StartTimer_timeout():
