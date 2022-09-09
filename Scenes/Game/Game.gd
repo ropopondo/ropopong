@@ -200,4 +200,4 @@ func add_balls() -> void:
 			"collided_with_paddle", self, "_on_Ball_collided_with_paddle"
 		)
 
-		get_node("/root/Game/Balls").call_deferred("add_child", ball)
+		get_node("/root/Game/Balls").call_deferred("add_child", new_ball)
