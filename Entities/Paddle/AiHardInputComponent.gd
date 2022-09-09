@@ -57,9 +57,9 @@ func is_ball_moving_away(ball: Ball) -> bool:
 func move_towards_center() -> void:
 	var direction
 	if paddle.position.y > 344 + 2:
-		direction = -1
+		direction = -paddle.move_speed
 	elif paddle.position.y < 344 - 2:
-		direction = 1
+		direction = paddle.move_speed
 	else:
 		direction = 0
 

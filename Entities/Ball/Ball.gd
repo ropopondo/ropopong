@@ -85,7 +85,14 @@ func _physics_process(delta):
 
 			# Add an angle when hitting the ball with a moving paddle.
 			direction = direction.rotated(
-				deg2rad(paddle_rotation_max_deg * paddle.direction.y * 0.3 * paddle_side)
+				deg2rad(
+					(
+						paddle_rotation_max_deg
+						* (paddle.direction.y / paddle.move_speed)
+						* 0.3
+						* paddle_side
+					)
+				)
 			)
 
 			# Give a speed boost when hitting the ball further out.

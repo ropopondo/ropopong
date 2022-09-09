@@ -3,7 +3,7 @@ extends Node
 class_name PlayerInputComponent
 
 # Declare member variables here.
-var player
+var paddle: Paddle
 
 enum Side {
 	LEFT,
@@ -16,8 +16,7 @@ var down_action
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	player = get_parent()
-	player.connect("update", self, "handle_input")
+	paddle = get_parent()
 
 
 func set_side(side):
@@ -29,13 +28,17 @@ func set_side(side):
 		down_action = "game_right_down"
 
 
-func handle_input():
-	if not "direction" in player:
+func _unhandled_key_input(_event):
+	if not "direction" in paddle:
 		return
 
-	player.direction = Vector2()
+	if Input.is_action_just_pressed(up_action):
+		paddle.direction = Vector2.UP
+		get_tree().set_input_as_handled()
+	if Input.is_action_just_pressed(down_action):
+		paddle.direction = Vector2.DOWN
+		get_tree().set_input_as_handled()
 
-	if Input.is_action_pressed(up_action):
-		player.direction.y -= 1
-	if Input.is_action_pressed(down_action):
-		player.direction.y += 1
+	if Input.is_action_just_released(up_action) or Input.is_action_just_released(down_action):
+		paddle.direction = Vector2()
+		get_tree().set_input_as_handled()

@@ -24,8 +24,8 @@ func calculate_velocity():
 func get_ball_direction():
 	if abs(paddle.position.y - ball.position.y) > 20:
 		if paddle.position.y < ball.position.y:
-			return 1
+			return paddle.move_speed
 		else:
-			return -1
+			return -paddle.move_speed
 	else:
 		return 0
