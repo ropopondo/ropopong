@@ -1,12 +1,11 @@
 extends Node2D
 
-
 var ball_scene = preload("res://Entities/Ball/Ball.tscn")
 var paddle_scene = preload("res://Entities/Paddle/Paddle.tscn")
 var powerup_scene = preload("res://Entities/Powerup/Powerup.tscn")
 var wall_scene = preload("res://Entities/Wall/Wall.tscn")
 
-export (String) var main_menu_scene_path
+export(String) var main_menu_scene_path
 
 var score_left = 0
 var score_right = 0
@@ -33,14 +32,14 @@ func _ready():
 func add_paddles():
 	paddle_left = paddle_scene.instance()
 	paddle_right = paddle_scene.instance()
-	
+
 	paddle_left.position = Vector2(40, 344)
 	paddle_right.position = Vector2(984, 344)
-	
+
 	var left_input = PlayerInputComponent.new()
 	left_input.set_side(PlayerInputComponent.Side.LEFT)
 	paddle_left.add_child(left_input)
-	
+
 	var right_input
 	if Global.game_mode == Global.GameMode.VersusEasyAi:
 		right_input = AiInputComponent.new()
@@ -73,7 +72,9 @@ func new_game():
 
 
 func _process(_delta):
-	hud.get_node("CountDownContainer/CenterContainer/CountDown").set_text(str(ceil($StartTimer.time_left)))
+	hud.get_node("CountDownContainer/CenterContainer/CountDown").set_text(
+		str(ceil($StartTimer.time_left))
+	)
 
 
 func reset():
@@ -83,10 +84,10 @@ func reset():
 	$FinalScreen.set_visible(false)
 	remove_paddles()
 	add_paddles()
-	
+
 	for powerup in get_tree().get_nodes_in_group("powerups"):
 		powerup.queue_free()
-	
+
 	for additional_ball in additional_balls:
 		additional_ball.queue_free()
 	additional_balls.clear()
@@ -144,7 +145,7 @@ func _on_powerup_collected(powerup: Powerup):
 		create_wall()
 	elif powerup.type == powerup.Type.AddBalls:
 		add_balls()
-	
+
 	powerup.collect(last_hit_paddle)
 
 
@@ -158,7 +159,10 @@ func create_wall() -> void:
 	if last_hit_paddle == paddle_left:
 		x = 0
 	else:
-		var wall_width: int = (wall.get_node("CollisionShape2D") as CollisionShape2D).shape.extents.x * 2
+		var wall_width: int = (
+			(wall.get_node("CollisionShape2D") as CollisionShape2D).shape.extents.x
+			* 2
+		)
 		x = 1024 - wall_width
 	wall.position = Vector2(x, 88)
 	call_deferred("add_child", wall)
@@ -174,8 +178,10 @@ func add_balls() -> void:
 		if i % 2 == 0:
 			rotation *= -1
 		new_ball.direction = ball.direction.rotated(rotation)
-		var _error := new_ball.connect("collided_with_paddle", self, "_on_Ball_collided_with_paddle")
-		
+		var _error := new_ball.connect(
+			"collided_with_paddle", self, "_on_Ball_collided_with_paddle"
+		)
+
 		additional_balls.push_back(new_ball)
-		
+
 		call_deferred("add_child_below_node", $Balls, new_ball)

@@ -13,11 +13,13 @@ func _ready():
 	paddle = get_parent()
 	paddle.connect("update", self, "calculate_velocity")
 
+
 func calculate_velocity():
 	if not "direction" in paddle:
 		return
-	
+
 	paddle.direction = Vector2(0, get_ball_direction())
+
 
 func get_ball_direction():
 	if abs(paddle.position.y - ball.position.y) > 20:

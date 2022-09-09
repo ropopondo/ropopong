@@ -1,6 +1,6 @@
 extends Control
 
-export (String) var game_scene
+export(String) var game_scene
 
 
 func _on_VersusPlayerButton_pressed():

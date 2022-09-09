@@ -3,6 +3,7 @@ extends Control
 signal play
 signal end
 
+
 func _on_PlayButton_pressed():
 	emit_signal("play")
 
