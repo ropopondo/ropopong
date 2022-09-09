@@ -51,9 +51,11 @@ func move_towards_center():
 func move_towards_predicted_ball():
 	var target_y = predict_ball_at_paddle()
 	var direction
-	if paddle.position.y > target_y + 2:
+	# By adding a relatively large number, the AI will hit more with the edge of the paddle.
+	# That increases the ball speed and makes it harder for the player.
+	if paddle.position.y > target_y + 40:
 		direction = -1
-	elif paddle.position.y < target_y - 2:
+	elif paddle.position.y < target_y - 40:
 		direction = 1
 	else:
 		direction = 0
@@ -66,17 +68,18 @@ func predict_ball_at_paddle():
 	if ball.direction.y == 0:
 		return top_border + (viewport_height - top_border) / 2
 
-	var horizontal_distance = viewport_width - ball.position.x
-	var movement_angle = acos(Vector2(1, 0).dot(ball.direction.normalized()))
+	var horizontal_distance = paddle.position.x - ball.position.x
+	var movement_angle = ball.direction.angle()
 	var expected_vertical_movement = horizontal_distance * tan(movement_angle)
 	var expected_vertical_position = expected_vertical_movement + ball.position.y
 
-	if expected_vertical_position < top_border:
-		expected_vertical_position = top_border + (top_border - expected_vertical_position)
-	elif expected_vertical_position > viewport_height:
-		expected_vertical_position = (
-			viewport_height
-			- (expected_vertical_position - viewport_height)
-		)
+	while expected_vertical_position < top_border or expected_vertical_position > viewport_height:
+		if expected_vertical_position < top_border:
+			expected_vertical_position = top_border + (top_border - expected_vertical_position)
+		elif expected_vertical_position > viewport_height:
+			expected_vertical_position = (
+				viewport_height
+				- (expected_vertical_position - viewport_height)
+			)
 
 	return expected_vertical_position
