@@ -7,7 +7,7 @@
 extents = Vector2( 512, 10 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 10, 256 )
+extents = Vector2( 80, 256 )
 
 [node name="Field" type="Node2D"]
 script = ExtResource( 2 )
@@ -33,7 +33,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GoalLeft"]
-position = Vector2( -10, 344 )
+position = Vector2( -80, 344 )
 shape = SubResource( 2 )
 
 [node name="GoalRight" type="Area2D" parent="."]
@@ -41,10 +41,8 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GoalRight"]
-position = Vector2( 1034, 344 )
+position = Vector2( 1104, 344 )
 shape = SubResource( 2 )
 
-[connection signal="area_entered" from="GoalLeft" to="." method="_on_GoalLeft_area_entered"]
 [connection signal="body_entered" from="GoalLeft" to="." method="_on_GoalLeft_body_entered"]
-[connection signal="area_entered" from="GoalRight" to="." method="_on_GoalRight_area_entered"]
 [connection signal="body_entered" from="GoalRight" to="." method="_on_GoalRight_body_entered"]

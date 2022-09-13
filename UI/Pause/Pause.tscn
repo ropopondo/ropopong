@@ -6,7 +6,7 @@
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_top = 40.0
 content_margin_bottom = 40.0
-bg_color = Color( 0, 0, 0, 0.662745 )
+bg_color = Color( 0.803922, 0.807843, 0.937255, 0.635294 )
 
 [node name="Pause" type="Control"]
 anchor_right = 1.0
@@ -14,46 +14,66 @@ anchor_bottom = 1.0
 script = ExtResource( 2 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_top = -103.5
-margin_bottom = 191.5
+anchor_bottom = 1.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_top = 40.0
 margin_right = 1024.0
-margin_bottom = 255.0
-custom_constants/separation = 75
+margin_bottom = 560.0
 
 [node name="EndMessage" type="Label" parent="PanelContainer/VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 67.0
+margin_bottom = 252.0
+size_flags_vertical = 3
 theme = ExtResource( 1 )
 text = "Pause"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 142.0
+[node name="HBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 268.0
 margin_right = 1024.0
-margin_bottom = 215.0
-custom_constants/separation = 75
+margin_bottom = 520.0
+size_flags_vertical = 3
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 254.0
-margin_right = 540.0
-margin_bottom = 73.0
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_top = 75.0
+margin_right = 1024.0
+margin_bottom = 118.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
+
+[node name="PlayButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 43.0
+focus_neighbour_top = NodePath("../../MarginContainer2/ExitButton")
+focus_neighbour_bottom = NodePath("../../MarginContainer2/ExitButton")
+focus_next = NodePath("../../MarginContainer2/ExitButton")
+focus_previous = NodePath("../../MarginContainer2/ExitButton")
 theme = ExtResource( 1 )
 text = "Continue"
 
-[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 615.0
-margin_right = 769.0
-margin_bottom = 73.0
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_top = 134.0
+margin_right = 1024.0
+margin_bottom = 177.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
+
+[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 43.0
+focus_neighbour_top = NodePath("../../MarginContainer/PlayButton")
+focus_neighbour_bottom = NodePath("../../MarginContainer/PlayButton")
+focus_next = NodePath("../../MarginContainer/PlayButton")
+focus_previous = NodePath("../../MarginContainer/PlayButton")
 theme = ExtResource( 1 )
 text = "Exit"
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="visibility_changed" from="." to="." method="_on_Pause_visibility_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/MarginContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/MarginContainer2/ExitButton" to="." method="_on_ExitButton_pressed"]

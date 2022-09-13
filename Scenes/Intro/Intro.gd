@@ -6,6 +6,9 @@ export(String) var main_menu_scene
 func _process(_delta):
 	var intensity = $IntroTimer.time_left / $IntroTimer.wait_time
 	$PanelContainer/RopopondoLabel.set_modulate(Color(intensity, intensity, intensity, 1))
+	$PanelContainer/MarginContainer/TextureRect.set_modulate(
+		Color(intensity, intensity, intensity, 1)
+	)
 
 
 func _on_IntroTimer_timeout():

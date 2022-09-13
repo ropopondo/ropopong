@@ -1,10 +1,17 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/Intro/Intro.gd" type="Script" id=2]
+[ext_resource path="res://UI/logo_400.png" type="Texture" id=4]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://UI/Montserrat-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 70
+outline_size = 1
+outline_color = Color( 0, 0.270588, 0.380392, 1 )
+font_data = SubResource( 1 )
 
 [node name="Intro" type="Control"]
 anchor_right = 1.0
@@ -12,16 +19,36 @@ anchor_bottom = 1.0
 script = ExtResource( 2 )
 main_menu_scene = "res://Scenes/MainMenu/MainMenu.tscn"
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
+color = Color( 0, 0, 0, 1 )
+
+[node name="PanelContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_right = 1024.0
+margin_bottom = 432.0
+custom_constants/margin_top = 32
+custom_constants/margin_left = 312
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer"]
+margin_left = 312.0
+margin_top = 32.0
+margin_right = 712.0
+margin_bottom = 432.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 4 )
 
 [node name="RopopondoLabel" type="Label" parent="PanelContainer"]
-margin_top = 266.0
+margin_top = 448.0
 margin_right = 1024.0
-margin_bottom = 333.0
+margin_bottom = 534.0
 theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Ropopondo"
 align = 1
 

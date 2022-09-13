@@ -18,6 +18,8 @@ var last_hit_paddle: Paddle
 
 var ball: Ball
 
+var game_ended: bool = false
+
 onready var hud: Control = get_node("HUD")
 onready var paddles: Node = get_node("Paddles")
 
@@ -94,7 +96,8 @@ func _process(_delta):
 	remove_balls_out_of_bounds()
 	maybe_reset()
 
-	if $GameTimer.time_left == 0 and score_left != score_right:
+	if $GameTimer.time_left == 0 and score_left != score_right and not game_ended:
+		game_ended = true
 		if score_left > score_right:
 			end_game("Left wins!")
 		else:
@@ -108,6 +111,7 @@ func maybe_reset() -> void:
 
 
 func reset():
+	game_ended = false
 	remove_balls()
 	add_ball()
 	ball.reset()
@@ -140,7 +144,8 @@ func reset_game_timer() -> void:
 func end_game(message):
 	remove_paddles()
 	remove_balls()
-	$FinalScreen.get_node("PanelContainer/VBoxContainer/EndMessage").set_text(message)
+	get_tree().paused = true
+	$FinalScreen.get_node("PanelContainer/VBoxContainer/VBoxContainer/EndMessage").set_text(message)
 	$FinalScreen.set_visible(true)
 
 

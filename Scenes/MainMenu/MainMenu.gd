@@ -3,6 +3,10 @@ extends Control
 export(String) var game_scene
 
 
+func _ready():
+	$MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/VersusPlayerButton.grab_focus()
+
+
 func _on_VersusPlayerButton_pressed():
 	Global.game_mode = Global.GameMode.VersusPlayer
 	var _error = get_tree().change_scene(game_scene)

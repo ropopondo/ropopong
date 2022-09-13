@@ -2,11 +2,11 @@
 
 [ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/MainMenu/MainMenu.gd" type="Script" id=2]
+[ext_resource path="res://UI/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="DynamicFont" id=1]
+size = 110
+font_data = ExtResource( 3 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -14,56 +14,112 @@ anchor_bottom = 1.0
 script = ExtResource( 2 )
 game_scene = "res://Scenes/Game/Game.tscn"
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0.803922, 0.807843, 0.937255, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -306.5
-margin_top = -258.5
-margin_right = 306.5
-margin_bottom = 258.5
-custom_styles/panel = SubResource( 2 )
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2"]
-margin_right = 613.0
-margin_bottom = 517.0
-custom_constants/separation = 75
-alignment = 1
-
-[node name="VersusPlayerButton" type="Button" parent="PanelContainer2/VBoxContainer"]
-margin_right = 613.0
-margin_bottom = 73.0
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 292.0
+size_flags_vertical = 7
 theme = ExtResource( 1 )
-text = "Play versus player"
+custom_colors/font_color = Color( 0, 0.270588, 0.380392, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Ropopong"
+align = 1
+valign = 1
 
-[node name="VersusAiButton2" type="Button" parent="PanelContainer2/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 308.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 58.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
+
+[node name="VersusPlayerButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 58 )
+focus_neighbour_top = NodePath("../../MarginContainer4/ExitButton")
+focus_neighbour_bottom = NodePath("../../MarginContainer2/VersusAiButton2")
+focus_next = NodePath("../../MarginContainer2/VersusAiButton2")
+focus_previous = NodePath("../../MarginContainer4/ExitButton")
+theme = ExtResource( 1 )
+text = "VERSUS PLAYER"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 74.0
+margin_right = 1024.0
+margin_bottom = 132.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
+
+[node name="VersusAiButton2" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer2"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 58 )
+focus_neighbour_top = NodePath("../../MarginContainer/VersusPlayerButton")
+focus_neighbour_bottom = NodePath("../../MarginContainer3/VersusHardAiButton3")
+focus_next = NodePath("../../MarginContainer3/VersusHardAiButton3")
+focus_previous = NodePath("../../MarginContainer/VersusPlayerButton")
+theme = ExtResource( 1 )
+text = "VERSUS AI"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 margin_top = 148.0
-margin_right = 613.0
-margin_bottom = 221.0
-theme = ExtResource( 1 )
-text = "Play versus AI"
+margin_right = 1024.0
+margin_bottom = 206.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
 
-[node name="VersusHardAiButton3" type="Button" parent="PanelContainer2/VBoxContainer"]
-margin_top = 296.0
-margin_right = 613.0
-margin_bottom = 369.0
+[node name="VersusHardAiButton3" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer3"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 58 )
+focus_neighbour_top = NodePath("../../MarginContainer2/VersusAiButton2")
+focus_neighbour_bottom = NodePath("../../MarginContainer4/ExitButton")
+focus_next = NodePath("../../MarginContainer4/ExitButton")
+focus_previous = NodePath("../../MarginContainer2/VersusAiButton2")
 theme = ExtResource( 1 )
-text = "Play versus hard AI"
+text = "VERSUS HARD AI"
 
-[node name="ExitButton" type="Button" parent="PanelContainer2/VBoxContainer"]
-margin_top = 444.0
-margin_right = 613.0
-margin_bottom = 517.0
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 1024.0
+margin_bottom = 280.0
+custom_constants/margin_right = 256
+custom_constants/margin_left = 256
+
+[node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer4"]
+margin_left = 256.0
+margin_right = 768.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 58 )
+focus_neighbour_top = NodePath("../../MarginContainer3/VersusHardAiButton3")
+focus_neighbour_bottom = NodePath("../../MarginContainer/VersusPlayerButton")
+focus_next = NodePath("../../MarginContainer/VersusPlayerButton")
+focus_previous = NodePath("../../MarginContainer3/VersusHardAiButton3")
 theme = ExtResource( 1 )
-text = "Exit"
+text = "EXIT"
 
-[connection signal="pressed" from="PanelContainer2/VBoxContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_pressed"]
-[connection signal="pressed" from="PanelContainer2/VBoxContainer/VersusAiButton2" to="." method="_on_VersusAiButton_pressed"]
-[connection signal="pressed" from="PanelContainer2/VBoxContainer/VersusHardAiButton3" to="." method="_on_VersusHardAiButton_pressed"]
-[connection signal="pressed" from="PanelContainer2/VBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer2/VersusAiButton2" to="." method="_on_VersusAiButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer3/VersusHardAiButton3" to="." method="_on_VersusHardAiButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer4/ExitButton" to="." method="_on_ExitButton_pressed"]
