@@ -91,7 +91,7 @@ func _process(_delta):
 	hud.get_node("CountDownContainer/CenterContainer/CountDown").set_text(
 		str(ceil($StartTimer.time_left))
 	)
-	hud.get_node("Top/Timer").set_text(str(ceil($GameTimer.time_left)))
+	hud.get_node("MarginContainer/Top/Timer").set_text(str(ceil($GameTimer.time_left)))
 
 	remove_balls_out_of_bounds()
 	maybe_reset()
@@ -126,8 +126,8 @@ func reset():
 
 
 func update_score():
-	hud.get_node("Top/PointsLeft").set_text(str(score_left))
-	hud.get_node("Top/PointsRight").set_text(str(score_right))
+	hud.get_node("MarginContainer/Top/PointsLeft").set_text(str(score_left))
+	hud.get_node("MarginContainer/Top/PointsRight").set_text(str(score_right))
 
 
 func remove_balls_out_of_bounds():
