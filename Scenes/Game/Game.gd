@@ -16,8 +16,6 @@ var paddle_right: Paddle
 
 var last_hit_paddle: Paddle
 
-var ball: Ball
-
 var game_ended: bool = false
 
 onready var hud: Control = get_node("HUD")
@@ -55,10 +53,12 @@ func add_paddles():
 	paddles.call_deferred("add_child", paddle_right)
 
 
-func add_ball():
-	ball = ball_scene.instance()
+func add_ball() -> Ball:
+	var ball: Ball = ball_scene.instance()
 	var _error := ball.connect("collided_with_paddle", self, "_on_Ball_collided_with_paddle")
 	get_node("/root/Game/Balls").call_deferred("add_child", ball)
+	
+	return ball
 
 
 func remove_paddles():
@@ -75,7 +75,6 @@ func remove_balls():
 	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
 	for old_ball in all_balls:
 		old_ball.queue_free()
-	ball = null
 
 
 func new_game():
@@ -113,7 +112,7 @@ func maybe_reset() -> void:
 func reset():
 	game_ended = false
 	remove_balls()
-	add_ball()
+	var ball = add_ball()
 	ball.reset()
 	$StartTimer.start()
 	hud.get_node("CountDownContainer").set_visible(true)
@@ -149,6 +148,14 @@ func end_game(message):
 	$FinalScreen.set_visible(true)
 
 
+func get_any_ball() -> Ball:
+	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
+	if all_balls.empty():
+		return null
+	
+	return all_balls.front()
+
+
 func _unhandled_key_input(_event):
 	if Input.is_action_just_pressed("game_pause"):
 		get_tree().paused = true
@@ -168,6 +175,7 @@ func _on_Field_goal_right():
 
 func _on_StartTimer_timeout():
 	hud.get_node("CountDownContainer").set_visible(false)
+	var ball = get_any_ball()
 	ball.start()
 
 
@@ -194,11 +202,11 @@ func _on_PowerupTimer_timeout():
 	self.add_child(powerup)
 
 
-func _on_powerup_collected(powerup: Powerup):
+func _on_powerup_collected(powerup: Powerup, ball: Ball):
 	if powerup.type == powerup.Type.BlockUntilHit:
 		create_wall()
 	elif powerup.type == powerup.Type.AddBalls:
-		add_balls()
+		add_balls(ball)
 
 	powerup.collect(last_hit_paddle)
 
@@ -222,16 +230,16 @@ func create_wall() -> void:
 	call_deferred("add_child", wall)
 
 
-func add_balls() -> void:
+func add_balls(original_ball: Ball) -> void:	
 	for i in range(1, 4):
 		var new_ball: Ball = ball_scene.instance()
-		new_ball.position = ball.position
-		new_ball.position -= ball.direction.normalized() * 20 * i
-		new_ball.hit_counter = ball.hit_counter
+		new_ball.position = original_ball.position
+		new_ball.position -= original_ball.direction.normalized() * 20 * i
+		new_ball.hit_counter = original_ball.hit_counter
 		var rotation := deg2rad(i * 10)
 		if i % 2 == 0:
 			rotation *= -1
-		new_ball.direction = ball.direction.rotated(rotation)
+		new_ball.direction = original_ball.direction.rotated(rotation)
 		var _error := new_ball.connect(
 			"collided_with_paddle", self, "_on_Ball_collided_with_paddle"
 		)

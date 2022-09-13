@@ -2,7 +2,7 @@ extends Area2D
 
 class_name Powerup
 
-signal powerup_collected(powerup)
+signal powerup_collected(powerup, ball)
 
 var paddle_growth := 5
 
@@ -39,7 +39,8 @@ func collect(paddle: Paddle):
 
 
 func _on_Powerup_body_entered(body):
-	emit_signal("powerup_collected", self)
-
-	if body is Ball and type == Type.TemporarySpeedup:
-		body.boost(3, 0.5)
+	if body is Ball:
+		emit_signal("powerup_collected", self, body)
+		
+		if type == Type.TemporarySpeedup:
+			body.boost(3, 0.5)
