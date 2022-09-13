@@ -69,6 +69,7 @@ func boost(multiplier: float, time_in_seconds: float) -> void:
 
 func _physics_process(delta):
 	var collision = move_and_collide(direction * delta)
+	var deg_angle = rad2deg(direction.angle())
 
 	if collision:
 		direction = direction.bounce(collision.normal)
@@ -84,16 +85,22 @@ func _physics_process(delta):
 				paddle_side = -1
 
 			# Add an angle when hitting the ball with a moving paddle.
-			direction = direction.rotated(
-				deg2rad(
-					(
-						paddle_rotation_max_deg
-						* (paddle.direction.y / paddle.move_speed)
-						* 0.3
-						* paddle_side
-					)
-				)
+			var moving_rotation = (
+				paddle_rotation_max_deg
+				* (paddle.direction.y / paddle.move_speed)
+				* 0.4
+				* paddle_side
 			)
+			# Within limits so ball doesn't freak along the paddle.
+			if deg_angle > 0 and deg_angle <= 90:
+				moving_rotation = min(moving_rotation, 75 - deg_angle)
+			elif deg_angle < 0 and deg_angle >= -90:
+				moving_rotation = max(moving_rotation, -75 - deg_angle)
+			elif deg_angle > 90 and deg_angle < 180:
+				moving_rotation = min(moving_rotation, 105 - deg_angle)
+			elif deg_angle < -90 and deg_angle > -180:
+				moving_rotation = max(moving_rotation, -105 - deg_angle)
+			direction = direction.rotated(deg2rad(moving_rotation))
 
 			# Give a speed boost when hitting the ball further out.
 			# Interpolate linearly from center to edge.
@@ -109,15 +116,23 @@ func _physics_process(delta):
 			# It ensures that the ball direction is away from the paddle, as we
 			# already applied the bounce.
 			if (paddle_side > 0 and direction.x > 0) or (paddle_side < 0 and direction.x < 0):
-				direction = direction.rotated(
-					deg2rad(
-						(
-							paddle_rotation_max_deg
-							* (diff_to_center / (paddle.height / 2))
-							* paddle_side
-						)
-					)
+				deg_angle = rad2deg(direction.angle())
+				var rotation = (
+					paddle_rotation_max_deg
+					* (diff_to_center / (paddle.height / 2))
+					* paddle_side
 				)
+				# Within limits so ball doesn't freak along the paddle.
+				if deg_angle > 0 and deg_angle <= 90:
+					rotation = min(rotation, 75 - deg_angle)
+				elif deg_angle < 0 and deg_angle >= -90:
+					rotation = max(rotation, -75 - deg_angle)
+				elif deg_angle > 90 and deg_angle < 180:
+					rotation = min(rotation, 105 - deg_angle)
+				elif deg_angle < -90 and deg_angle > -180:
+					rotation = max(rotation, -105 - deg_angle)
+
+				direction = direction.rotated(deg2rad(rotation))
 
 			emit_signal("collided_with_paddle", paddle)
 		elif collision.collider.is_in_group("walls"):
@@ -127,7 +142,7 @@ func _physics_process(delta):
 			$CollideWall.play()
 
 	# Direction must have a minimal horizontal movement to keep the game fun.
-	var deg_angle = rad2deg(direction.angle())
+	deg_angle = rad2deg(direction.angle())
 	if deg_angle > 75 and deg_angle <= 90:
 		direction = direction.rotated(-direction.angle() + deg2rad(75))
 	elif deg_angle < -75 and deg_angle >= -90:

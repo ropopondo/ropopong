@@ -59,7 +59,7 @@ func move_towards_center() -> void:
 	if paddle.position.y > 344 + 2:
 		direction = -paddle.move_speed
 	elif paddle.position.y < 344 - 2:
-		direction = paddle.move_speed
+		direction = 1
 	else:
 		direction = 0
 
