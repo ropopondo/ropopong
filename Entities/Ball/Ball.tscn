@@ -16,7 +16,8 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color( 0, 0.270588, 0.380392, 1 )
+self_modulate = Color( 1.1, 1.1, 1.1, 1 )
+color = Color( 0.858824, 0.803922, 0.937255, 1 )
 polygon = PoolVector2Array( -5, -5, 5, -5, 5, 5, -5, 5 )
 
 [node name="CollidePaddle" type="AudioStreamPlayer" parent="."]
