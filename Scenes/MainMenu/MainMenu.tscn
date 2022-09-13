@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://UI/HUD_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Scenes/MainMenu/MainMenu.gd" type="Script" id=2]
 [ext_resource path="res://UI/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://UI/switch.tres" type="AudioStream" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 110
@@ -119,7 +120,18 @@ focus_previous = NodePath("../../MarginContainer3/VersusHardAiButton3")
 theme = ExtResource( 1 )
 text = "EXIT"
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_focus_entered"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_focus_entered"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/VersusPlayerButton" to="." method="_on_VersusPlayerButton_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer2/VersusAiButton2" to="." method="_on_VersusPlayerButton_focus_entered"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer2/VersusAiButton2" to="." method="_on_VersusPlayerButton_focus_entered"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer2/VersusAiButton2" to="." method="_on_VersusAiButton_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer3/VersusHardAiButton3" to="." method="_on_VersusPlayerButton_focus_entered"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer3/VersusHardAiButton3" to="." method="_on_VersusPlayerButton_focus_entered"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer3/VersusHardAiButton3" to="." method="_on_VersusHardAiButton_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer4/ExitButton" to="." method="_on_VersusPlayerButton_focus_entered"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer4/ExitButton" to="." method="_on_VersusPlayerButton_focus_entered"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer4/ExitButton" to="." method="_on_ExitButton_pressed"]

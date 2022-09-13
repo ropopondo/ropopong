@@ -24,3 +24,7 @@ func _on_VersusHardAiButton_pressed():
 
 func _on_ExitButton_pressed():
 	get_tree().quit()
+
+
+func _on_VersusPlayerButton_focus_entered():
+	$AudioStreamPlayer.play()
