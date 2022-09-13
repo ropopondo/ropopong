@@ -92,7 +92,6 @@ func _process(_delta):
 	)
 	hud.get_node("MarginContainer/Top/Timer").set_text(str(ceil($GameTimer.time_left)))
 
-	remove_balls_out_of_bounds()
 	maybe_reset()
 
 	if $GameTimer.time_left == 0 and score_left != score_right and not game_ended:
@@ -127,13 +126,6 @@ func reset():
 func update_score():
 	hud.get_node("MarginContainer/Top/PointsLeft").set_text(str(score_left))
 	hud.get_node("MarginContainer/Top/PointsRight").set_text(str(score_right))
-
-
-func remove_balls_out_of_bounds():
-	var all_balls: Array = (get_node("/root/Game/Balls") as Node).get_children()
-	for old_ball in all_balls:
-		if old_ball.position.x < -10 or old_ball.position.x > 1034:
-			old_ball.queue_free()
 
 
 func reset_game_timer() -> void:
