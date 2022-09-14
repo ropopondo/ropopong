@@ -31,6 +31,23 @@ func _init():
 		printerr("Rolled unknown powerup type.")
 
 
+func _ready():
+	if type == Type.GrowPaddle:
+		set_label("G")
+	elif type == Type.AddBalls:
+		set_label("B")
+	elif type == Type.TemporarySpeedup:
+		set_label("S")
+	elif type == Type.BlockUntilHit:
+		set_label("W")
+	else:
+		printerr("Rolled unknown powerup type.")
+
+
+func set_label(label: String) -> void:
+	$Label.text = label
+
+
 func collect(paddle: Paddle):
 	if type == Type.GrowPaddle and paddle:
 		paddle.increase_height(paddle_growth)
