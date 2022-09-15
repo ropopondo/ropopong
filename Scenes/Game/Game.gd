@@ -208,6 +208,9 @@ func _on_Ball_collided_with_paddle(paddle: Paddle):
 
 
 func create_wall() -> void:
+	if exists_wall():
+		return
+
 	var wall := wall_scene.instance() as Wall
 	var x: int
 	if last_hit_paddle == paddle_left:
@@ -220,6 +223,16 @@ func create_wall() -> void:
 		x = 1024 - wall_width
 	wall.position = Vector2(x, 88)
 	call_deferred("add_child", wall)
+
+
+func exists_wall() -> bool:
+	for wall in get_tree().get_nodes_in_group("walls"):
+		if last_hit_paddle == paddle_left and wall.position.x == 0:
+			return true
+		elif last_hit_paddle == paddle_right and wall.position.x > 0:
+			return true
+
+	return false
 
 
 func add_balls(original_ball: Ball) -> void:	
