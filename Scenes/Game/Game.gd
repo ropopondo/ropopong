@@ -94,6 +94,8 @@ func remove_explosions():
 func new_game():
 	score_left = 0
 	score_right = 0
+	camera.reset()
+	remove_explosions()
 	update_score()
 	reset_game_timer()
 	reset()
@@ -124,7 +126,7 @@ func maybe_reset() -> void:
 
 
 func reset():
-	camera.reset()
+	last_hit_paddle = null
 	game_ended = false
 	remove_balls()
 	var ball = add_ball()
@@ -135,7 +137,6 @@ func reset():
 	remove_paddles()
 	add_paddles()
 	remove_powerups()
-	remove_explosions()
 
 
 func update_score():

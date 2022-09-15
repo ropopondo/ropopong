@@ -13,7 +13,7 @@ font_data = ExtResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
-game_scene = "res://Scenes/Game/Game.tscn"
+tutorial_scene = "res://Scenes/Tutorial/Tutorial.tscn"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 1024.0
