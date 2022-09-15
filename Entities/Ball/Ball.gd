@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 class_name Ball
 
+var explosion_scene = preload("res://Entities/Explosion/Explosion.tscn")
+
 var initial_speed := 300
 var speed_increase := 40
 var base_speed := initial_speed
@@ -27,6 +29,16 @@ signal collided_with_paddle(paddle)
 
 func _ready():
 	randomize()
+
+
+func explode():
+	var explosion = explosion_scene.instance()
+	explosion.position = position
+	explosion.position.x = max(explosion.position.x, 0)
+	explosion.position.x = min(explosion.position.x, 1024)
+	get_node("/root/Game/Explosions").add_child(explosion)
+
+	queue_free()
 
 
 func reset():

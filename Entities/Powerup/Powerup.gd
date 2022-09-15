@@ -4,6 +4,8 @@ class_name Powerup
 
 signal powerup_collected(powerup, ball)
 
+var explosion_scene = preload("res://Entities/Explosion/Explosion.tscn")
+
 var paddle_growth := 5
 
 enum Type {
@@ -52,12 +54,16 @@ func collect(paddle: Paddle):
 	if type == Type.GrowPaddle and paddle:
 		paddle.increase_height(paddle_growth)
 
+	var explosion = explosion_scene.instance()
+	explosion.position = position
+	get_node("/root/Game/Explosions").add_child(explosion)
+
 	queue_free()
 
 
 func _on_Powerup_body_entered(body):
 	if body is Ball:
 		emit_signal("powerup_collected", self, body)
-		
+
 		if type == Type.TemporarySpeedup:
 			body.boost(3)
