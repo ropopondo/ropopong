@@ -84,7 +84,7 @@ func _physics_process(delta):
 			boost_multiplier = 1.0
 			$CollidePaddle.play()
 
-			var paddle: Paddle = collision.collider
+			var paddle = collision.collider
 			# 1 is left side, -1 is right side.
 			var paddle_side: int = 1
 			if paddle.position.x > 512:
