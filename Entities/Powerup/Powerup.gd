@@ -60,4 +60,4 @@ func _on_Powerup_body_entered(body):
 		emit_signal("powerup_collected", self, body)
 		
 		if type == Type.TemporarySpeedup:
-			body.boost(3, 0.5)
+			body.boost(3)

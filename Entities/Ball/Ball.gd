@@ -56,15 +56,8 @@ func get_speed():
 	return min(calc_speed, max_speed)
 
 
-func boost(multiplier: float, time_in_seconds: float) -> void:
+func boost(multiplier: float) -> void:
 	boost_multiplier = multiplier
-
-	boost_timer = Timer.new()
-	boost_timer.one_shot = true
-	var _error := boost_timer.connect("timeout", self, "_on_boost_timer_ended")
-
-	add_child(boost_timer)
-	boost_timer.start(time_in_seconds)
 
 
 func _physics_process(delta):
@@ -76,6 +69,7 @@ func _physics_process(delta):
 
 		if collision.collider.is_in_group("paddles"):
 			hit_counter += 1
+			boost_multiplier = 1.0
 			$CollidePaddle.play()
 
 			var paddle: Paddle = collision.collider
@@ -153,9 +147,3 @@ func _physics_process(delta):
 		direction = direction.rotated(-direction.angle() - deg2rad(105))
 
 	direction = direction.normalized() * get_speed() * paddle_multiplier
-
-
-func _on_boost_timer_ended() -> void:
-	boost_timer.queue_free()
-	boost_timer = null
-	boost_multiplier = 1.0
