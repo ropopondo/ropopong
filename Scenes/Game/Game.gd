@@ -94,7 +94,8 @@ func _process(_delta):
 
 	maybe_reset()
 
-	if $GameTimer.time_left == 0 and score_left != score_right and not game_ended:
+	# Require at least two points ahead to win.
+	if $GameTimer.time_left == 0 and abs(score_left - score_right) > 1 and not game_ended:
 		game_ended = true
 		if score_left > score_right:
 			end_game("Left wins!")
