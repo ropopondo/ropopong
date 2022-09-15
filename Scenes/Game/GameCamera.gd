@@ -1,6 +1,7 @@
 extends Camera2D
 
 class_name GameCamera
+# https://godotengine.org/qa/438/camera2d-screen-shake-extension
 
 var _duration = 0.0
 var _period_in_ms = 0.0
