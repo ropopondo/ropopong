@@ -29,7 +29,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entities/Explosion/Explosion.gd"
 }, {
-"base": "",
+"base": "Camera2D",
+"class": "GameCamera",
+"language": "GDScript",
+"path": "res://Scenes/Game/GameCamera.gd"
+}, {
+"base": "EditorVCSInterface",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://addons/godot-git-plugin/git_api.gdns"
@@ -59,6 +64,7 @@ _global_script_class_icons={
 "AiInputComponent": "",
 "Ball": "",
 "Explosion": "",
+"GameCamera": "",
 "GitAPI": "",
 "Paddle": "",
 "PlayerInputComponent": "",

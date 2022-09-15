@@ -21,8 +21,12 @@ var game_ended: bool = false
 onready var hud: Control = get_node("HUD")
 onready var paddles: Node = get_node("Paddles")
 
+var camera: GameCamera
+
 
 func _ready():
+	camera = $GameCamera
+	camera.make_current()
 	new_game()
 
 
@@ -77,6 +81,16 @@ func remove_balls():
 		old_ball.queue_free()
 
 
+func remove_powerups():
+	for powerup in get_tree().get_nodes_in_group("powerups"):
+		powerup.queue_free()
+
+
+func remove_explosions():
+	for explosion in get_node("/root/Game/Explosions").get_children():
+		explosion.queue_free()
+
+
 func new_game():
 	score_left = 0
 	score_right = 0
@@ -110,6 +124,7 @@ func maybe_reset() -> void:
 
 
 func reset():
+	camera.reset()
 	game_ended = false
 	remove_balls()
 	var ball = add_ball()
@@ -119,9 +134,8 @@ func reset():
 	$FinalScreen.set_visible(false)
 	remove_paddles()
 	add_paddles()
-
-	for powerup in get_tree().get_nodes_in_group("powerups"):
-		powerup.queue_free()
+	remove_powerups()
+	remove_explosions()
 
 
 func update_score():
@@ -136,7 +150,9 @@ func reset_game_timer() -> void:
 func end_game(message):
 	remove_paddles()
 	remove_balls()
+	remove_powerups()
 	get_tree().paused = true
+	camera.reset()
 	$FinalScreen.get_node("PanelContainer/VBoxContainer/VBoxContainer/EndMessage").set_text(message)
 	$FinalScreen.set_visible(true)
 
@@ -158,11 +174,13 @@ func _unhandled_key_input(_event):
 
 func _on_Field_goal_left():
 	score_right += 1
+	camera.shake(0.3, 500, 10)
 	update_score()
 
 
 func _on_Field_goal_right():
 	score_left += 1
+	camera.shake(0.3, 500, 10)
 	update_score()
 
 
@@ -202,6 +220,7 @@ func _on_powerup_collected(powerup: Powerup, ball: Ball):
 		add_balls(ball)
 
 	powerup.collect(last_hit_paddle)
+	camera.shake(0.15, 400, 5)
 
 
 func _on_Ball_collided_with_paddle(paddle: Paddle):

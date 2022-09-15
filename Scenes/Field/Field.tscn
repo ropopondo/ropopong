@@ -11,13 +11,13 @@ extents = Vector2( 80, 256 )
 [node name="Field" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="MainFieldBackground" type="Polygon2D" parent="."]
+color = Color( 0.772549, 0.67451, 0.898039, 1 )
+polygon = PoolVector2Array( -100, -100, 1124, -100, 1124, 700, -100, 700 )
+
 [node name="HUDBackground" type="Polygon2D" parent="."]
 color = Color( 0.858824, 0.803922, 0.937255, 1 )
 polygon = PoolVector2Array( 0, 0, 1024, 0, 1024, 88, 0, 88 )
-
-[node name="MainFieldBackground" type="Polygon2D" parent="."]
-color = Color( 0.772549, 0.67451, 0.898039, 1 )
-polygon = PoolVector2Array( 0, 88, 1024, 88, 1024, 600, 0, 600 )
 
 [node name="WallTop" type="StaticBody2D" parent="."]
 
