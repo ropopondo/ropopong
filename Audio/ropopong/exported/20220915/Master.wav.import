@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Master.wav-b796b0919c8a7e47b0c02e7dc2f7b3de.sample"
+
+[deps]
+
+source_file="res://Audio/ropopong/exported/20220915/Master.wav"
+dest_files=[ "res://.import/Master.wav-b796b0919c8a7e47b0c02e7dc2f7b3de.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

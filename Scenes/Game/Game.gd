@@ -99,6 +99,7 @@ func new_game():
 	update_score()
 	reset_game_timer()
 	reset()
+	$Music.play()
 	get_tree().paused = false
 
 
