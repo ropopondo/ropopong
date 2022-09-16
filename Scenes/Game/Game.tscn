@@ -49,19 +49,24 @@ autostart = true
 [node name="GameTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="HUD" parent="." instance=ExtResource( 7 )]
+[node name="MenusCanvasLayer" type="CanvasLayer" parent="."]
+layer = 3
 
-[node name="Pause" parent="." instance=ExtResource( 1 )]
+[node name="Pause" parent="MenusCanvasLayer" instance=ExtResource( 1 )]
 pause_mode = 2
+unique_name_in_owner = true
 visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
 
-[node name="FinalScreen" parent="." instance=ExtResource( 8 )]
+[node name="FinalScreen" parent="MenusCanvasLayer" instance=ExtResource( 8 )]
 pause_mode = 2
+unique_name_in_owner = true
 visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
+
+[node name="HUDCanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="HUD" parent="HUDCanvasLayer" instance=ExtResource( 7 )]
+unique_name_in_owner = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
@@ -75,7 +80,7 @@ stream = ExtResource( 5 )
 [connection signal="collided_with_paddle" from="Balls/Ball" to="." method="_on_Ball_collided_with_paddle"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="PowerupTimer" to="." method="_on_PowerupTimer_timeout"]
-[connection signal="end" from="Pause" to="." method="_on_Pause_end"]
-[connection signal="play" from="Pause" to="." method="_on_Pause_play"]
-[connection signal="end" from="FinalScreen" to="." method="_on_FinalScreen_end"]
-[connection signal="play" from="FinalScreen" to="." method="_on_FinalScreen_play"]
+[connection signal="end" from="MenusCanvasLayer/Pause" to="." method="_on_Pause_end"]
+[connection signal="play" from="MenusCanvasLayer/Pause" to="." method="_on_Pause_play"]
+[connection signal="end" from="MenusCanvasLayer/FinalScreen" to="." method="_on_FinalScreen_end"]
+[connection signal="play" from="MenusCanvasLayer/FinalScreen" to="." method="_on_FinalScreen_play"]

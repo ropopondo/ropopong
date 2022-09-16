@@ -18,7 +18,7 @@ var last_hit_paddle: Paddle
 
 var game_ended: bool = false
 
-onready var hud: Control = get_node("HUD")
+onready var hud: Control = get_node("%HUD")
 onready var paddles: Node = get_node("Paddles")
 
 var camera: GameCamera
@@ -134,7 +134,7 @@ func reset():
 	ball.reset()
 	$StartTimer.start()
 	hud.get_node("CountDownContainer").set_visible(true)
-	$FinalScreen.set_visible(false)
+	get_node("%FinalScreen").set_visible(false)
 	remove_paddles()
 	add_paddles()
 	remove_powerups()
@@ -155,8 +155,8 @@ func end_game(message):
 	remove_powerups()
 	get_tree().paused = true
 	camera.reset()
-	$FinalScreen.get_node("PanelContainer/VBoxContainer/VBoxContainer/EndMessage").set_text(message)
-	$FinalScreen.set_visible(true)
+	get_node("%FinalScreen").get_node("PanelContainer/VBoxContainer/VBoxContainer/EndMessage").set_text(message)
+	get_node("%FinalScreen").set_visible(true)
 
 
 func get_any_ball() -> Ball:
@@ -171,7 +171,7 @@ func _unhandled_key_input(_event):
 	if Input.is_action_just_pressed("game_pause"):
 		get_tree().paused = true
 		get_tree().set_input_as_handled()
-		$Pause.visible = true
+		get_node("%Pause").visible = true
 
 
 func _on_Field_goal_left():
@@ -201,7 +201,7 @@ func _on_FinalScreen_play():
 	new_game()
 
 func _on_Pause_play():
-	$Pause.visible = false
+	get_node("%Pause").visible = false
 	get_tree().paused = false
 
 func _on_Pause_end():
