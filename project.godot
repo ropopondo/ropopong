@@ -74,8 +74,11 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Pong Clone"
+config/name="Ropopong"
 run/main_scene="res://Scenes/Intro/Intro.tscn"
+boot_splash/show_image=false
+config/icon="res://logo.png"
+config/windows_native_icon="res://logo.ico"
 
 [autoload]
 
@@ -89,6 +92,10 @@ window/size/resizable=false
 
 version_control_autoload_on_startup=true
 version_control_plugin_name="GitAPI"
+
+[editor_plugins]
+
+enabled=PoolStringArray(  )
 
 [gui]
 
